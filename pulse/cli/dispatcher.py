@@ -27,8 +27,8 @@ def resolve_hostname(target):
 def add_banners(result, target, timeout):
     for res in result:
         if res.get("status") == "open":
-            banner = grab_banner(target, res.port, timeout)
-            res.banner = banner
+            banner = grab_banner(target, res["port"], timeout)
+            res["banner"] = banner
 
     return result
 
@@ -95,7 +95,7 @@ def dispatch():
         """
 
     except KeyboardInterrupt:
-        print(f"\n[!] Scan interrupted by user.")
+        print("\n[!] Scan interrupted by user.")
         return 130
 
     except Exception as err:
