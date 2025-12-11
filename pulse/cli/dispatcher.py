@@ -6,6 +6,7 @@ from pulse.cli import BANNER
 from pulse.cli.arguments import get_args
 from pulse.core.banner import grab_banner
 from pulse.core.tcp_scan import tcp_scan
+from pulse.output.json_writer import print_asJson, save_asJson
 from pulse.output.printer import print_tcp_results
 
 
@@ -64,7 +65,7 @@ def dispatch():
         print(f"[!] Error: Could not resolve hostname '{args.target}'")
         return 1
 
-    # _target_temp = args.target
+    _target_temp = args.target
     args.target = target_ip
 
     scan_types = []
@@ -105,9 +106,20 @@ def dispatch():
 
     elapsed_time = time.time() - start_time
 
+    # Output results
+    if args.output:
+        save_asJson(
+            args.output,
+            f"{_target_temp} ({target_ip})" if _target_temp != target_ip else target_ip,
+            args,
+            elapsed_time,
+            tcp_results,
+        )
+        print(f"[*] Results saved to {args.output}")
+
     if args.json:
-        # print as json
-        print("")
+        print_asJson(target_ip, args, elapsed_time, tcp_results)
+
     else:
         if tcp_results is not None:
             print_tcp_results(tcp_results, scan_type="TCP", show_banner=args.banner)
