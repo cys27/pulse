@@ -48,9 +48,12 @@ def print_tcp_results(results, scan_type="TCP", show_banner=False):
         banner = result.get("banner", "") or ""
 
         if show_banner:
+            # remove newlines and extra spaces
+            banner = banner.replace("\n", " ").replace("\r", " ").strip()
+
             # Truncate banner if too long
-            if len(banner) > 30:
-                banner = banner[:27] + "..."
+            if len(banner) > 40:
+                banner = banner[:37] + "..."
             print(f"{port:<10} {status:<12} {service:<20} {banner}")
         else:
             print(f"{port:<10} {status:<12} {service:<20}")
