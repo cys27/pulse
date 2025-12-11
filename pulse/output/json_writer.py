@@ -20,7 +20,7 @@ def generate_json_output(
         output["scan_options"] = {
             "ports": args.ports,
             "tcp_scan": args.tcp,
-            "udp_scan": args.udp,
+            # "udp_scan": args.udp,
             "banner_grab": args.banner,
             "threads": args.threads,
             "timeout": args.timeout,
