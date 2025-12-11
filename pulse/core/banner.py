@@ -7,6 +7,9 @@ def grab_banner(host, port, timeout):
             sock.settimeout(timeout)
             sock.connect((host, port))
 
+            read_timeout = 2.0 if timeout > 2.0 else timeout
+            sock.settimeout(read_timeout)
+
             try:
                 banner = sock.recv(1024)
 
@@ -16,8 +19,12 @@ def grab_banner(host, port, timeout):
             except socket.timeout:
                 pass
 
+            sock.settimeout(timeout)
+
             try:
-                sock.sendall(b"Hey!")
+                probe = b"HEAD / HTTP/1.0\r\n\r\n"
+                sock.sendall(probe)
+                
                 banner = sock.recv(1024)
 
                 if banner:
