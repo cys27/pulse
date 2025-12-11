@@ -1,6 +1,6 @@
 import socket
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from pulse.core.threading_pool import threaded_scan
 from pulse.core.utils import parse_ports
 
 
@@ -35,30 +35,11 @@ def tcp_scan(args):
     threads = args.threads
     ports = parse_ports(args.ports)
 
-    result = []
-
-    with ThreadPoolExecutor(max_workers=threads) as exec:
-        futures = [
-            exec.submit(scan_tcp_port, target_ip, port, timeout) for port in ports
-        ]
-
-        try:
-            for future in as_completed(futures):
-                try:
-                    scan_result = future.result()
-                    proc = process_result(scan_result)
-
-                    if proc:
-                        result.append(proc)
-
-                except Exception:
-                    pass
-
-        except KeyboardInterrupt:
-            for future in futures:
-                future.cancel()
-
-            exec.shutdown(wait=False)
-            raise
-
-        return result
+    return threaded_scan(
+        scan_func=scan_tcp_port,
+        target_ip=target_ip,
+        threads=threads,
+        timeout=timeout,
+        ports=ports,
+        proc_func=process_result,
+    )
