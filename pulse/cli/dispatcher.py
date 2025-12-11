@@ -6,6 +6,7 @@ from pulse.cli import BANNER
 from pulse.cli.arguments import get_args
 from pulse.core.banner import grab_banner
 from pulse.core.tcp_scan import tcp_scan
+from pulse.output.printer import print_tcp_results
 
 
 def get_full_time():
@@ -63,7 +64,7 @@ def dispatch():
         print(f"[!] Error: Could not resolve hostname '{args.target}'")
         return 1
 
-    _target_temp = args.target
+    # _target_temp = args.target
     args.target = target_ip
 
     scan_types = []
@@ -108,7 +109,9 @@ def dispatch():
         # print as json
         print("")
     else:
-        print(tcp_results)
+        if tcp_results is not None:
+            print_tcp_results(tcp_results, scan_type="TCP", show_banner=args.banner)
+
         print(f"[*] Scan completed in {elapsed_time:.2f} seconds.")
 
     return 0
