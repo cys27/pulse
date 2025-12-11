@@ -28,14 +28,22 @@ Pulse is a lightweight, multi-threaded TCP port scanner written in Python. It is
 
 2. Run the setup script to install dependencies and create a global command:
    ```bash
-   chmod +x setup.sh
-   ./setup.sh
+   chmod +x install.sh
+   ./install.sh
    ```
    
    This script will:
    - Check for Python 3.
    - Make the script executable.
    - Create a symbolic link so you can run `pulse` from anywhere.
+
+### Uninstall
+
+To remove the global `pulse` command from your system:
+```bash
+chmod +x uninstall.sh
+./uninstall.sh
+```
 
 ## Usage
 
