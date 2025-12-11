@@ -2,6 +2,7 @@ import datetime
 import socket
 import time
 
+from pulse.cli import BANNER
 from pulse.cli.arguments import get_args
 from pulse.core.banner import grab_banner
 from pulse.core.tcp_scan import tcp_scan
@@ -52,6 +53,8 @@ def run_udp_scan(args, target):
 
 
 def dispatch():
+    print(BANNER)
+
     args = get_args()
 
     target_ip = resolve_hostname(args.target)
