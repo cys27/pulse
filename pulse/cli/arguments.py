@@ -72,6 +72,13 @@ def get_args():
         help="Save the results in JSON format",
     )
 
+    ## Output file option
+    parser.add_argument(
+        "-o", 
+        "--output", 
+        help="Save results to a JSON file"
+    )
+
     # Parse the arguments
     args = parser.parse_args()
 
