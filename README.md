@@ -2,7 +2,7 @@
 
 Pulse is a lightweight, multi-threaded TCP port scanner written in Python. It is designed to be fast, simple to use, and effective for network reconnaissance tasks.
 
-![Pulse Help Menu](images/pulse_help.png)
+![Pulse Demo](images/pulse_demo.gif)
 
 ## Features
 
