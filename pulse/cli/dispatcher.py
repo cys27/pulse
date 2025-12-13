@@ -6,6 +6,7 @@ from pulse.cli import BANNER
 from pulse.cli.arguments import get_args
 from pulse.core.banner import grab_banner
 from pulse.core.tcp_scan import tcp_scan
+from pulse.core.utils import Colors
 from pulse.output.json_writer import print_asJson, save_asJson
 from pulse.output.printer import print_tcp_results
 
@@ -36,13 +37,13 @@ def add_banners(result, target, timeout):
 
 
 def run_tcp_scan(args, target):
-    print(f"[*] Starting TCP scan on {target}")
-    print(f"[*] Started at {get_full_time()}")
+    print(f"{Colors.BLUE}[*] Starting TCP scan on {target}{Colors.ENDC}")
+    print(f"{Colors.BLUE}[*] Started at {get_full_time()}{Colors.ENDC}")
 
     tcp_results = tcp_scan(args)
 
     if args.banner and tcp_results:
-        print("[*] Grabbing banners from open ports.")
+        print(f"{Colors.BLUE}[*] Grabbing banners from open ports.{Colors.ENDC}")
         tcp_results = add_banners(tcp_results, target, args.timeout)
 
     return tcp_results
@@ -61,8 +62,10 @@ def dispatch():
 
     target_ip = resolve_hostname(args.target)
 
-    if target_ip is None:
-        print(f"[!] Error: Could not resolve hostname '{args.target}'")
+    if not target_ip:
+        print(
+            f"{Colors.FAIL}[!] Error: Could not resolve hostname '{args.target}'{Colors.ENDC}"
+        )
         return 1
 
     _target_temp = args.target
@@ -97,11 +100,11 @@ def dispatch():
         """
 
     except KeyboardInterrupt:
-        print("\n[!] Scan interrupted by user.")
+        print(f"\n{Colors.FAIL}[!] Scan interrupted by user.{Colors.ENDC}")
         return 130
 
     except Exception as err:
-        print(f"[!] Error during scan: {err}")
+        print(f"{Colors.FAIL}[!] Error during scan: {err}{Colors.ENDC}")
         return 1
 
     elapsed_time = time.time() - start_time
@@ -115,7 +118,7 @@ def dispatch():
             elapsed_time,
             tcp_results,
         )
-        print(f"[*] Results saved to {args.output}")
+        print(f"{Colors.BLUE}[*] Results saved to {args.output}{Colors.ENDC}")
 
     if args.json:
         print_asJson(target_ip, args, elapsed_time, tcp_results)
@@ -124,6 +127,8 @@ def dispatch():
         if tcp_results is not None:
             print_tcp_results(tcp_results, scan_type="TCP", show_banner=args.banner)
 
-        print(f"[*] Scan completed in {elapsed_time:.2f} seconds.")
+        print(
+            f"{Colors.BLUE}[*] Scan completed in {elapsed_time:.2f} seconds.{Colors.ENDC}"
+        )
 
     return 0
