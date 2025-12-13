@@ -1,6 +1,8 @@
 import json
 import os
 
+from pulse.core.utils import Colors
+
 
 def load_servicesJson():
     servicesJson_path = os.path.join(
@@ -28,17 +30,21 @@ def print_tcp_results(results, scan_type="TCP", show_banner=False):
     open_ports = [res for res in results if res.get("status") == "open"]
 
     if not open_ports:
-        print(f"\n[*] No open {scan_type} ports found.\n")
+        print(f"\n{Colors.WARNING}[*] No open {scan_type} ports found.{Colors.ENDC}\n")
         return
 
     open_ports.sort(key=lambda x: x["port"])
 
-    print(f"\n[+] Found {len(open_ports)} open {scan_type} port(s):\n")
+    print(
+        f"\n{Colors.GREEN}[+] Found {len(open_ports)} open {scan_type} port(s):{Colors.ENDC}\n"
+    )
 
     if show_banner:
-        print(f"{'PORT':<10} {'STATE':<12} {'SERVICE':<20} {'BANNER'}")
+        print(
+            f"{Colors.HEADER}{'PORT':<10} {'STATE':<12} {'SERVICE':<20} {'BANNER'}{Colors.ENDC}"
+        )
     else:
-        print(f"{'PORT':<10} {'STATE':<12} {'SERVICE':<20}")
+        print(f"{Colors.HEADER}{'PORT':<10} {'STATE':<12} {'SERVICE':<20}{Colors.ENDC}")
 
     # Print each result
     for result in open_ports:
@@ -54,9 +60,13 @@ def print_tcp_results(results, scan_type="TCP", show_banner=False):
             # Truncate banner if too long
             if len(banner) > 40:
                 banner = banner[:37] + "..."
-            print(f"{port:<10} {status:<12} {service:<20} {banner}")
+            print(
+                f"{Colors.BOLD}{port:<10}{Colors.ENDC} {Colors.GREEN}{status:<12}{Colors.ENDC} {service:<20} {banner}"
+            )
         else:
-            print(f"{port:<10} {status:<12} {service:<20}")
+            print(
+                f"{Colors.BOLD}{port:<10}{Colors.ENDC} {Colors.GREEN}{status:<12}{Colors.ENDC} {service:<20}"
+            )
 
     print()
 
