@@ -94,3 +94,9 @@ pulse -t example.com --tcp --json -o results.json
 ## License
 
 This project is licensed under the GNU General Public License v3.0 (GPLv3). See the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This tool is intended for authorized security testing and educational purposes only. Always obtain proper authorization before scanning any web application. The author is not responsible for any misuse of this tool.
+
+---
